@@ -45,7 +45,7 @@
             it 'bulk uploads previously inexisting docs', (done) ->
                 nocks = helpers.startNocking '/fixtures/overwriteBulk.1.json'
 
-                frugal.overwriteBulk helpers.database, [{ '_id': '1', 'test': 'A test doc'}], (err, result) ->
+                frugal.overwriteBulk helpers.database, [{ _id: '1', test: 'A test doc'}], (err, result) ->
                     helpers.stopNocking nocks
                     expect(err).to.not.exist
                     expect(result).to.exist
@@ -59,7 +59,7 @@
             it 'bulk uploads previously inexisting docs and then updates it', (done) ->
                 nocks = helpers.startNocking '/fixtures/overwriteBulk.2.json'
 
-                frugal.overwriteBulk helpers.database, [{ '_id': '2', 'test': 'A test doc'}], (err, result) ->
+                frugal.overwriteBulk helpers.database, [{ _id: '2', test: 'A test doc'}], (err, result) ->
                     expect(err).to.not.exist
                     expect(result).to.exist
                     expect(result.inserted.length).to.equal 1
@@ -67,7 +67,7 @@
                     expect(result.resurected.length).to.equal 0
                     expect(result.revs).to.not.be.empty
                     expect(result.errors).to.be.empty
-                    frugal.overwriteBulk helpers.database, [{ '_id': '2', 'test': 'An updated test doc'}], (err, result) ->
+                    frugal.overwriteBulk helpers.database, [{ _id: '2', test: 'An updated test doc'}], (err, result) ->
                         helpers.stopNocking nocks
                         expect(err).to.not.exist
                         expect(result).to.exist
@@ -81,7 +81,7 @@
             it 'bulk uploads previously inexisting docs and resurects it after a delete', (done) ->
                 nocks = helpers.startNocking '/fixtures/overwriteBulk.3.json'
 
-                frugal.overwriteBulk helpers.database, [{ '_id': '3', 'test': 'A test doc'}], (err, result) ->
+                frugal.overwriteBulk helpers.database, [{ _id: '3', test: 'A test doc'}], (err, result) ->
                     expect(err).to.not.exist
                     expect(result).to.exist
                     expect(result.inserted.length).to.equal 1
@@ -94,7 +94,7 @@
                         expect(err).to.not.exist
                         expect(body).to.exist
 
-                        frugal.overwriteBulk helpers.database, [{ '_id': '3', 'test': 'A resurected test doc'}], (err, result) ->
+                        frugal.overwriteBulk helpers.database, [{ _id: '3', test: 'A resurected test doc'}], (err, result) ->
                             helpers.stopNocking nocks
                             expect(err).to.not.exist
                             expect(result).to.exist
@@ -135,10 +135,10 @@
                 nocks = helpers.startNocking '/fixtures/partialUpdateBulk.1.json'
 
                 docs = [
-                    { '_id': '4.1', 'test': 'A test doc'},
-                    { '_id': '4.2', 'test': 'A test doc'},
-                    { '_id': '4.3', 'test': 'A test doc'},
-                    { '_id': '4.4', 'test': 'A test doc'}
+                    { _id: '4.1', test: 'A test doc' },
+                    { _id: '4.2', test: 'A test doc' },
+                    { _id: '4.3', test: 'A test doc' },
+                    { _id: '4.4', test: 'A test doc' }
                 ]
                 docIdsToUpdate = ['4.1', '4.3']
 
@@ -183,7 +183,7 @@
 
                 docs = []
                 _.each [1..100], (index) ->
-                    docs.push { '_id': '5.' + index, type: 'test', 'index': index }
+                    docs.push { _id: '5.' + index, type: 'test', 'index': index }
 
                 frugal.overwriteBulk helpers.database, docs, (err, result) ->
                     expect(err).to.not.exist

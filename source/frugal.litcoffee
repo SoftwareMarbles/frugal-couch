@@ -21,11 +21,13 @@ Bulk updating documents have two significant advantages over updating them one b
 
 Bulk updating shouldn't be used always unless you are absolutely certain that nothing else is updating your database. It can be very useful even in multi-client databases as some types of documents may considered to be stable and depending only on external values (e.g. importing Facebook Graph data)
 
-`overwriteBulk` method accepts three parameters:
+This function accepts three parameters:
 
-1.`database`: database [nano](https://github.com/dscape/nano) object (or an object with same semantics) used to access the database
+1.`database`: [`nano`](https://github.com/dscape/nano) database object (or an object with equivalent semantics) used to access the database
+
 2.`docs`: an array of documents that need to be bulk-updated
-3.`callback`: function with `(err, result)` signature; `result` holds the ids and revisions of inserted, updated, resurected documents (previously deleted and now re-inserted) and documents on which CouchDb returned an error; `callback` is always invoked asynchronously
+
+3.`callback`: function with `(err, result)` signature. `result` is an object containing `inserted`, `updated`, `resurected` arrays and `revs` and `errors` objects. The three arrays hold the ids of inserted, updated and resurected documents (previously deleted and now re-inserted) while the two objects have properties matching document ids and their latest revisions or CouchDb generated errors respectively. `callback` is always invoked asynchronously
 
     exports.overwriteBulk = (database, docs, callback) ->
 
@@ -142,6 +144,19 @@ CouchDb allows partial server-side modification of documents through its update 
 
 The alternative is to retrieve all the documents, apply the modification function to them and then bulk upload them. This is what `partialUpdateBulk` does.
 
+This function accepts the following parameters:
+
+1.`database`    -   `nano` database object or an object with equivalent semantics
+
+2.`docIds`      -   the array of IDs of the documents to update
+
+3.`partialUpdater`  -   the function accepting a single parameter (`doc` representing a database document) that does the document update and which will be invoked for each retrieved document
+
+4.`callback`    -   function accepting `err` and `result` parameters:
+
+ - `err`      -   error value in case of any error, falsy otherwise
+ - `result`   -   object with `revs` and `errors` object properties. `revs` maps the document IDs to their post-operation revision while errors maps any CouchDb errors to document ID related to it
+
     exports.partialUpdateBulk = (database, docIds, partialUpdater, callback) ->
 
         getResultObject = (revs, errors) ->
@@ -199,15 +214,19 @@ To update the docs we fetch them, update them in-place and then bulk upload them
 
 This function accepts the following parameters:
 
-1.`database`    -   `nano` database object or an object with the same semantics
+1.`database`    -   `nano` database object or an object with equivalent semantics
+
 2.`designDoc`   -   the name of the design document in which the view is to be found.
+
 3.`viewName`    -   the name of the view which will be queried.
+
 4.`options`     -   standard CouchDb options like `startkey` and `endkey`. It also holds the number of documents in each desired iteration in its `limit` property. If it doesn't then the default batch size is 1,000 documents (completely arbitrary number). One property that this function ignores is `skip` as it's needed to perform correct and optimal iterations.
+
 5.`iterator`    -   function accepting `err`, `docs` and `next` parameters:
 
--`err`      -   error value in case of any error, falsy otherwise.
--`rows`     -   the array of view entries in the current iteration.
--`next`     -   the function to be invoked when the next iteration should be performed.
+ - `err`      -   error value in case of any error, falsy otherwise
+ - `rows`     -   the array of view entries in the current iteration
+ - `next`     -   the function to be invoked when the next iteration should be performed
 
     exports.iterateViewBulk = (database, designDoc, viewName, options, iterator) ->
 
