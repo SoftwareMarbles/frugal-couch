@@ -1,4 +1,6 @@
 
+[ ![Codeship Status for SoftwareMarbles/frugal-couch](https://www.codeship.io/projects/42664c00-dcbd-0131-867d-7e56761d162f/status)](https://www.codeship.io/projects/24565)
+
 # Frugal Couch in Node
 
 ## Initialization
