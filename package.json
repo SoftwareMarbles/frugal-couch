@@ -1,0 +1,35 @@
+{
+  "name": "frugal-couch",
+  "version": "0.1.0",
+  "description": "Allows minimization of the number of HTTP requests to CouchDb/Cloudant. Built on top of nano",
+  "main": "frugal.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha -R spec --compilers coffee:coffee-script/register --require 'coffee-script/register' tests/*.tests.*coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SoftwareMarbles/frugal-couch"
+  },
+  "keywords": [
+    "CouchDb",
+    "Cloudant"
+  ],
+  "author": "Ivan Erceg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SoftwareMarbles/frugal-couch/issues"
+  },
+  "homepage": "https://github.com/SoftwareMarbles/frugal-couch",
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "debug": "~1.0.2"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.7.1",
+    "mocha": "~1.20.1",
+    "chai": "~1.9.1",
+    "nock": "~0.36.2",
+    "nano": "~5.10.0",
+    "async": "~0.9.0"
+  }
+}
